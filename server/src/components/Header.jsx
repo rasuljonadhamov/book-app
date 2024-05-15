@@ -1,25 +1,73 @@
 import { Link } from "react-router-dom";
 
-const Header = () => (
-  <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-    <h1 className="text-xl font-bold">
-      <Link to="/">Collection Management</Link>
-    </h1>
-    <nav>
-      <Link to="/" className="mr-4">
-        Home
-      </Link>
-      <Link to="/collections" className="mr-4">
-        Collections
-      </Link>
-      <Link to="/profile" className="mr-4">
-        Profile
-      </Link>
-      <Link to="/admin" className="mr-4">
-        Admin
-      </Link>
+const Header = () => {
+  const token = localStorage.getItem("token");
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
+          Collection Manager
+        </Link>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/collections">
+                Collections
+              </Link>
+            </li>
+            {token && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/user">
+                    Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin">
+                    Admin
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+          <ul className="navbar-nav">
+            {token ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-link nav-link"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.href = "/";
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
     </nav>
-  </header>
-);
+  );
+};
 
 export default Header;

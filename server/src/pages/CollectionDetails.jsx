@@ -1,32 +1,51 @@
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
 const CollectionDetails = () => {
   const { id } = useParams();
-  const [collection, setCollection] = useState(null);
+  const [collection, setCollection] = useState({});
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     axios
       .get(`/api/collections/${id}`)
-      .then((response) => setCollection(response.data));
+      .then((response) => setCollection(response.data))
+      .catch((error) => console.error(error));
+
+    axios
+      .get(`/api/collections/${id}/items`)
+      .then((response) => setItems(response.data))
+      .catch((error) => console.error(error));
   }, [id]);
 
-  if (!collection) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">{collection.name}</h2>
-      <ReactMarkdown>{collection.description}</ReactMarkdown>
-      <h3 className="text-xl font-bold mt-4">Items</h3>
-      <ul>
-        {collection.items.map((item) => (
-          <li key={item.id}>{item.name}</li>
+    <div className="container mt-5">
+      <h1 className="mb-4">{collection.name}</h1>
+      <p>
+        <ReactMarkdown>{collection.description}</ReactMarkdown>
+      </p>
+
+      <h2 className="mt-4">Items</h2>
+      <div className="row">
+        {items.map((item) => (
+          <div key={item.id} className="col-md-4 mb-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{item.name}</h5>
+                <p className="card-text">{item.tags.join(", ")}</p>
+                <Link
+                  to={`/collections/${id}/items/${item.id}`}
+                  className="btn btn-primary"
+                >
+                  View Item
+                </Link>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

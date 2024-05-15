@@ -28,5 +28,3 @@ exports.getCollectionById = async (req, res) => {
   if (!collection) return res.sendStatus(404);
   res.json(collection);
 };
-
-// Other collection-related controllers

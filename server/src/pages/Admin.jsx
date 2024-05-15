@@ -5,41 +5,135 @@ const Admin = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/admin/users").then((response) => setUsers(response.data));
+    axios
+      .get("/api/admin/users")
+      .then((response) => setUsers(response.data))
+      .catch((error) => console.error(error));
   }, []);
 
-  const handleUserAction = (userId, action) => {
-    axios.post(`/api/admin/users/${userId}/${action}`).then(() => {
-      setUsers(
-        users.map((user) =>
-          user.id === userId ? { ...user, status: action } : user
-        )
-      );
-    });
+  const handleBlock = (id) => {
+    axios
+      .post(`/api/admin/users/${id}/block`)
+      .then(() => {
+        setUsers(
+          users.map((user) =>
+            user.id === id ? { ...user, blocked: true } : user
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleUnblock = (id) => {
+    axios
+      .post(`/api/admin/users/${id}/unblock`)
+      .then(() => {
+        setUsers(
+          users.map((user) =>
+            user.id === id ? { ...user, blocked: false } : user
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`/api/admin/users/${id}`)
+      .then(() => {
+        setUsers(users.filter((user) => user.id !== id));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleAddAdmin = (id) => {
+    axios
+      .post(`/api/admin/users/${id}/admin`)
+      .then(() => {
+        setUsers(
+          users.map((user) =>
+            user.id === id ? { ...user, role: "admin" } : user
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleRemoveAdmin = (id) => {
+    axios
+      .post(`/api/admin/users/${id}/remove-admin`)
+      .then(() => {
+        setUsers(
+          users.map((user) =>
+            user.id === id ? { ...user, role: "user" } : user
+          )
+        );
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Admin Page</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.username} - {user.status}
-            <button
-              onClick={() => handleUserAction(user.id, "block")}
-              className="ml-2 p-1 bg-red-500 text-white rounded"
-            >
-              Block
-            </button>
-            <button
-              onClick={() => handleUserAction(user.id, "unblock")}
-              className="ml-2 p-1 bg-green-500 text-white rounded"
-            >
-              Unblock
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="container mt-5">
+      <h1 className="mb-4">User Management</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Blocked</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+              <td>{user.blocked ? "Yes" : "No"}</td>
+              <td>
+                {user.blocked ? (
+                  <button
+                    onClick={() => handleUnblock(user.id)}
+                    className="btn btn-secondary me-2"
+                  >
+                    Unblock
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleBlock(user.id)}
+                    className="btn btn-warning me-2"
+                  >
+                    Block
+                  </button>
+                )}
+                {user.role === "admin" ? (
+                  <button
+                    onClick={() => handleRemoveAdmin(user.id)}
+                    className="btn btn-secondary me-2"
+                  >
+                    Remove Admin
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddAdmin(user.id)}
+                    className="btn btn-primary me-2"
+                  >
+                    Make Admin
+                  </button>
+                )}
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1,17 +1,10 @@
-const ItemModel = (sequelize, DataTypes) => {
+import { DataTypes } from "sequelize";
+
+const ItemModel = (sequelize) => {
   const Item = sequelize.define("Item", {
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM("user", "admin"),
-      defaultValue: "user",
     },
   });
 

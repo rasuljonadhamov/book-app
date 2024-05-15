@@ -1,17 +1,22 @@
-const CollectionModel = (sequelize, DataTypes) => {
+import { DataTypes } from "sequelize";
+
+const CollectionModel = (sequelize) => {
   const Collection = sequelize.define("Collection", {
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM("user", "admin"),
-      defaultValue: "user",
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   });
 

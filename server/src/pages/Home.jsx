@@ -2,50 +2,84 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Home = () => {
-  const [items, setItems] = useState([]);
-  const [collections, setCollections] = useState([]);
+  const [latestItems, setLatestItems] = useState([]);
+  const [topCollections, setTopCollections] = useState([]);
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/items/latest").then((response) => setItems(response.data));
+    axios
+      .get("/api/items/latest")
+      .then((response) => setLatestItems(response.data))
+      .catch((error) => console.error(error));
+
     axios
       .get("/api/collections/top")
-      .then((response) => setCollections(response.data));
-    axios.get("/api/tags").then((response) => setTags(response.data));
+      .then((response) => setTopCollections(response.data))
+      .catch((error) => console.error(error));
+
+    axios
+      .get("/api/tags")
+      .then((response) => setTags(response.data))
+      .catch((error) => console.error(error));
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Latest Items</h2>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              {item.name} (Collection: {item.collection})
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Top Collections</h2>
-        <ul>
-          {collections.map((collection) => (
-            <li key={collection.id}>
-              {collection.name} (Items: {collection.itemsCount})
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section>
-        <h2 className="text-2xl font-bold mb-4">Tag Cloud</h2>
-        <div className="flex flex-wrap">
-          {tags.map((tag) => (
-            <span key={tag} className="mr-2 mb-2 p-2 bg-gray-300 rounded">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </section>
+    <div className="container mt-5">
+      <h1 className="mb-4">Latest Items</h1>
+      <div className="row">
+        {latestItems.map((item) => (
+          <div key={item.id} className="col-md-4 mb-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{item.name}</h5>
+                <p className="card-text">Collection: {item.collectionName}</p>
+                <p className="card-text">Author: {item.author}</p>
+                <a
+                  href={`/collections/${item.collectionId}/items/${item.id}`}
+                  className="btn btn-primary"
+                >
+                  View Item
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h1 className="mb-4">Top Collections</h1>
+      <div className="row">
+        {topCollections.map((collection) => (
+          <div key={collection.id} className="col-md-4 mb-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{collection.name}</h5>
+                <p className="card-text">
+                  Number of items: {collection.itemsCount}
+                </p>
+                <a
+                  href={`/collections/${collection.id}`}
+                  className="btn btn-primary"
+                >
+                  View Collection
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h1 className="mb-4">Tags</h1>
+      <div>
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className="badge bg-secondary me-2"
+            onClick={() => (window.location.href = `/search?tag=${tag}`)}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
     </div>
   );
 };

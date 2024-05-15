@@ -1,17 +1,10 @@
-const CommentModel = (sequelize, DataTypes) => {
+import { DataTypes } from "sequelize";
+
+const CommentModel = (sequelize) => {
   const Comment = sequelize.define("Comment", {
-    username: {
-      type: DataTypes.STRING,
+    text: {
+      type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM("user", "admin"),
-      defaultValue: "user",
     },
   });
 
