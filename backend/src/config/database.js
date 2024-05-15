@@ -2,8 +2,8 @@ import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
   "collection_management",
-  "username",
-  "password",
+  "root",
+  "rasuljon!@#",
   {
     host: "localhost",
     dialect: "mysql",

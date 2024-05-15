@@ -10,6 +10,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
+
       <Routes>
         <Route path="/" exact component={<Home />} />
         <Route path="/collections" exact component={<Collections />} />
