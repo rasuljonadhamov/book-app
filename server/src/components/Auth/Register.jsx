@@ -1,33 +1,48 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const { register } = useAuth();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await register({ email, password });
+    // await register({ email, password });
+    try {
+      await register(username, password);
+      //   alert("Registration successful!");
+    } catch (error) {
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (
-    <div className="register-container">
+    <div className="register-container flex flex-col  items-center justify-center">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-56">
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           placeholder="Email"
+          className="p-2 rounded-lg border  "
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          className="p-2 rounded-lg border  "
         />
-        <button type="submit">Register</button>
+        <button
+          className="bg-blue-700 text-white border-none rounded-md py-2"
+          type="submit"
+        >
+          Register
+        </button>
+        <Link to={"/login"}>Do you have an account ? </Link>
       </form>
     </div>
   );

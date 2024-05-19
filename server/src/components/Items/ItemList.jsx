@@ -2,6 +2,7 @@ import { useItems } from "../../hooks/useItems";
 
 const ItemList = ({ collectionId }) => {
   const { items, deleteItem } = useItems(collectionId);
+  console.log("itemlist " + items);
 
   return (
     <div className="item-list">

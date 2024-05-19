@@ -2,6 +2,7 @@ import { useCollections } from "../../hooks/useCollections";
 
 const CollectionList = () => {
   const { collections, deleteCollection } = useCollections();
+  console.log("Collections " + collections);
 
   return (
     <div className="collection-list">

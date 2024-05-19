@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   getItems,
@@ -20,11 +19,13 @@ export const useItems = (collectionId) => {
 
   const fetchItems = async () => {
     const items = await getItems(collectionId);
+    console.log("Fetched ite,s " + items);
     setItems(items);
   };
 
   const fetchItem = async (itemId) => {
     const fetchedItem = await getItem(itemId);
+    console.log("Fetched " + fetchedItem);
     setItem(fetchedItem);
   };
 

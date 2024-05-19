@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="home-page">
       <h2>Latest Items</h2>
-      <ItemList />
+      <ItemList collectionId={1} />
       <h2>Top 5 Largest Collections</h2>
       <CollectionList />
     </div>
