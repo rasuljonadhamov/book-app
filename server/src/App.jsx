@@ -9,26 +9,29 @@ import Register from "./components/Auth/Register";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import "./index.css";
+import { AuthProvider } from "./hooks/useAuth";
 
 const App = () => {
   return (
     <>
-      <Header />
-      <main className="container mx-auto p-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/collection/:collectionId"
-            element={<CollectionPage />}
-          />
-          <Route path="/item/:itemId" element={<ItemPage />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </main>
-      <Footer />
+      <AuthProvider>
+        <Header />
+        <main className="container mx-auto p-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/collection/:collectionId"
+              element={<CollectionPage />}
+            />
+            <Route path="/item/:itemId" element={<ItemPage />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </main>
+        <Footer />
+      </AuthProvider>
     </>
   );
 };

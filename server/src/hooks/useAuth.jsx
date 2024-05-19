@@ -13,10 +13,6 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
 const useProvideAuth = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -39,10 +35,22 @@ const useProvideAuth = () => {
     navigate("/");
   };
 
+  console.log({ user, login, register, logout });
+
+  // return (
+  //   <AuthContext.Provider value={{ user, login, logout }}>
+  //     {children}
+  //   </AuthContext.Provider>
+  // );
+
   return {
     user,
     login,
     register,
     logout,
   };
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
