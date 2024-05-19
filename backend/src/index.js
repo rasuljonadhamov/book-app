@@ -4,6 +4,7 @@ import sequelize from "./config/database.js";
 import routes from "./routes/index.js";
 import authRoutes from "./routes/userRoutes.js";
 import { authenticateToken, isAdmin } from "./middleware/authMiddleware.js";
+// import { getCollections } from "./controllers/collectionController.js";
 
 const app = express();
 app.use(cors());

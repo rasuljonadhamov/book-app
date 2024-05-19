@@ -1,14 +1,18 @@
 import jwt from "jsonwebtoken";
 
 const authenticateToken = (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, "your_jwt_secret", (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  try {
+    const decodedToken = jwt.verify(token, "your_secret_key");
+    req.userId = decodedToken.userId;
     next();
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
 };
 
 const isAdmin = (req, res, next) => {

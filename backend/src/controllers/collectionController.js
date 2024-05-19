@@ -28,3 +28,14 @@ exports.getCollectionById = async (req, res) => {
   if (!collection) return res.sendStatus(404);
   res.json(collection);
 };
+
+export const getTopCollections = async (req, res) => {
+  try {
+    const topCollections = await Collection.find()
+      .sort({ numberOfItems: -1 })
+      .limit(5);
+    res.json(topCollections);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
