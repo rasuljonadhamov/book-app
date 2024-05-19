@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import CollectionPage from "./pages/CollectionPage";
 import ItemPage from "./pages/ItemPage";
@@ -12,7 +12,7 @@ import "./index.css";
 
 const App = () => {
   return (
-    <Router>
+    <>
       <Header />
       <main className="container mx-auto p-4">
         <Routes>
@@ -29,7 +29,7 @@ const App = () => {
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </>
   );
 };
 

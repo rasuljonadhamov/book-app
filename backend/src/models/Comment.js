@@ -1,14 +1,11 @@
 import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-const CommentModel = (sequelize) => {
-  const Comment = sequelize.define("Comment", {
-    text: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  });
+const Comment = sequelize.define("Comment", {
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+});
 
-  return Comment;
-};
-
-export default CommentModel;
+export default Comment;

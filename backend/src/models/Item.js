@@ -1,14 +1,23 @@
 import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-const ItemModel = (sequelize) => {
-  const Item = sequelize.define("Item", {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  });
+const Item = sequelize.define("Item", {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  tags: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
+  },
+  customFields: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  likes: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
+});
 
-  return Item;
-};
-
-export default ItemModel;
+export default   Item;

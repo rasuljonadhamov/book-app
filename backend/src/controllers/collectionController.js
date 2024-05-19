@@ -1,41 +1,49 @@
-const { Collection, Item } = require("../models");
+import {
+  getCollections,
+  createCollection,
+  updateCollection,
+  deleteCollection,
+} from "../services/collectionService.js";
 
-exports.createCollection = async (req, res) => {
-  const { name, description, topic, image } = req.body;
+const getCollectionsHandler = async (req, res) => {
   try {
-    const collection = await Collection.create({
-      name,
-      description,
-      topic,
-      image,
-      UserId: req.user.id,
-    });
-    res.status(201).json(collection);
+    const collections = await getCollections();
+    res.send(collections);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).send({ error: error.message });
   }
 };
 
-exports.getCollections = async (req, res) => {
-  const collections = await Collection.findAll({ include: Item });
-  res.json(collections);
-};
-
-exports.getCollectionById = async (req, res) => {
-  const collection = await Collection.findByPk(req.params.id, {
-    include: Item,
-  });
-  if (!collection) return res.sendStatus(404);
-  res.json(collection);
-};
-
-export const getTopCollections = async (req, res) => {
+const createCollectioHandler = async (req, res) => {
   try {
-    const topCollections = await Collection.find()
-      .sort({ numberOfItems: -1 })
-      .limit(5);
-    res.json(topCollections);
+    const collection = await createCollection(req.body);
+    res.status(201).send(collection);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).send({ error: error.message });
   }
+};
+
+const updateCollectionHandler = async (req, res) => {
+  try {
+    const collection = await updateCollection(req.params.id, req.body);
+    res.send(collection);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+};
+
+const deleteCollectionHandler = async (req, res) => {
+  try {
+    await deleteCollection(req.params.id);
+    res.send({ message: "Collection deleted successfully" });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+};
+
+export {
+  getCollectionsHandler as getCollections,
+  createCollectioHandler as createCollection,
+  updateCollectionHandler as updateCollection,
+  deleteCollectionHandler as deleteCollection,
 };

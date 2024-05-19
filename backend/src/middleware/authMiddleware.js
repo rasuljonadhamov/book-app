@@ -1,43 +1,28 @@
-
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-const authenticateToken = (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-  if (!token) return res.sendStatus(401);
-
-  jwt.verify(token, "your_jwt_secret", (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
-
-const isAdmin = (req, res, next) => {
-  if (req.user.role !== "admin") return res.sendStatus(403);
-  next();
-};
-
-export { authenticateToken, isAdmin };
-
-
-const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization");
+export const authenticateJWT = (req, res, next) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Authorization denied. No token provided." });
+    return res.status(401).send({ error: "Access denied, no token provided" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    
-    req.user = decoded.user;
+    const decoded = jwt.verify(token, "your_jwt_secret");
+    req.user = decoded;
     next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token." });
+  } catch (ex) {
+    res.status(400).send({ error: "Invalid token" });
   }
 };
 
-export default authMiddleware;
+export const isAdmin = async (req, res, next) => {
+  const user = await User.findByPk(req.user.id);
+
+  if (user && user.role === "admin") {
+    next();
+  } else {
+    res.status(403).send({ error: "Access denied" });
+  }
+};

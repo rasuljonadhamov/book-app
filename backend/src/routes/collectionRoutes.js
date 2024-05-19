@@ -1,14 +1,16 @@
-const express = require("express");
-const {
-  createCollection,
+import express from "express";
+import {
   getCollections,
-  getCollectionById,
-} = require("../controllers/collectionController");
-const { authenticateToken } = require("../middleware/auth");
+  updateCollection,
+  createCollection,
+  deleteCollection,
+} from "../controllers/collectionController.js";
+import { authenticateJWT } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
-router.post("/", authenticateToken, createCollection);
 router.get("/", getCollections);
-router.get("/:id", getCollectionById);
+router.post("/", authenticateJWT, createCollection);
+router.put("/:id", authenticateJWT, updateCollection);
+router.delete("/:id", authenticateJWT, deleteCollection);
 
-module.exports = router;
+export default router;

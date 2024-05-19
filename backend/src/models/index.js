@@ -1,22 +1,22 @@
-import Sequelize from "sequelize";
+// src/models/index.js
 import sequelize from "../config/database.js";
+import User from "./User.js";
+import Collection from "./Collection.js";
+import Item from "./Item.js";
+import Comment from "./Comment.js";
 
-import UserModel from "./User.js";
-import CollectionModel from "./Collection.js";
-import ItemModel from "./Item.js";
-import CommentModel from "./Comment.js";
+// Define relationships
+User.hasMany(Collection, { foreignKey: "userId" });
+Collection.belongsTo(User, { foreignKey: "userId" });
 
-const User = UserModel(sequelize, Sequelize.DataTypes);
-const Collection = CollectionModel(sequelize, Sequelize.DataTypes);
-const Item = ItemModel(sequelize, Sequelize.DataTypes);
-const Comment = CommentModel(sequelize, Sequelize.DataTypes);
+Collection.hasMany(Item, { foreignKey: "collectionId" });
+Item.belongsTo(Collection, { foreignKey: "collectionId" });
 
-User.hasMany(Collection);
-Collection.belongsTo(User);
-Collection.hasMany(Item);
-Item.belongsTo(Collection);
-Item.hasMany(Comment);
-Comment.belongsTo(Item);
+Item.hasMany(Comment, { foreignKey: "itemId" });
+Comment.belongsTo(Item, { foreignKey: "itemId" });
+
+User.hasMany(Comment, { foreignKey: "userId" });
+Comment.belongsTo(User, { foreignKey: "userId" });
 
 const db = {
   sequelize,

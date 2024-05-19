@@ -1,3 +1,4 @@
+// src/config/database.js
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
