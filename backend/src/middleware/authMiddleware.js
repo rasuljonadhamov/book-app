@@ -1,20 +1,18 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-export const authenticateJWT = (req, res, next) => {
-  const authHeader = req.header("Authorization");
+const jwtSecret = process.env.JWT_SECRET || "your_jwt_secret";
 
-  console.log("Authorization Header:", authHeader);
+export const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
 
   if (!authHeader) {
     return res.status(401).send({ error: "Access denied, no token provided" });
   }
 
   const token = authHeader.startsWith("Bearer ")
-    ? authHeader.replace("Bearer ", "")
+    ? authHeader.split(" ")[1]
     : null;
-
-  console.log("Token:", token);
 
   if (!token) {
     return res
@@ -27,7 +25,6 @@ export const authenticateJWT = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (ex) {
-    console.error("Token verification failed:", ex);
     res.status(400).send({ error: "Invalid token" });
   }
 };

@@ -1,19 +1,31 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+// const API_URL = "http://localhost:5000/api";
+
+// export const getItems = async (collectionId) => {
+//   const response = await axios.get(
+//     `${API_URL}/collections/${collectionId}/items`
+//   );
+//   return response.data;
+// };
+
+const API_URL = "http://localhost:5000/api/collections";
 
 export const getItems = async (collectionId) => {
-  const response = await axios.get(
-    `${API_URL}/collections/${collectionId}/items`
-  );
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found");
+  }
+  const response = await axios.get(`${API_URL}/${collectionId}/items`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 export const createItem = async (collectionId, item) => {
-  const response = await axios.post(
-    `${API_URL}/collections/${collectionId}/items`,
-    item
-  );
+  const response = await axios.post(`${API_URL}/${collectionId}/items`, item);
   return response.data;
 };
 

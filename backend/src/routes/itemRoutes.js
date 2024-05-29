@@ -1,6 +1,7 @@
 import express from "express";
 import * as itemControllers from "../controllers/itemController.js";
 import { authenticateJWT } from "../middleware/authMiddleware.js";
+// import { isAdmin } from "./middleware/isAdmin.js";
 
 const router = express.Router();
 

@@ -15,6 +15,7 @@ export const useCollections = () => {
 
   const fetchCollections = async () => {
     const collections = await getCollections();
+    console.log('ccc : ' + collections);
     setCollections(collections);
   };
 

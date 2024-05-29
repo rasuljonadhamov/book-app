@@ -8,10 +8,11 @@ import {
   removeAdmin,
 } from "../controllers/adminController.js";
 import { authenticateJWT, isAdmin } from "../middleware/authMiddleware.js";
+// import { isAdmin } from './middleware/isAdmin.js';
 const router = express.Router();
 
 router.use(authenticateJWT);
-router.use(isAdmin);
+// router.use(isAdmin);
 
 router.get("/users", getUsers);
 router.put("/block/:id", blockUser);
