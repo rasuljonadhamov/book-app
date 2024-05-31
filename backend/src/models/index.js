@@ -1,11 +1,10 @@
-// src/models/index.js
+
 import sequelize from "../config/database.js";
 import User from "./User.js";
 import Collection from "./Collection.js";
 import Item from "./Item.js";
 import Comment from "./Comment.js";
 
-// Define relationships
 User.hasMany(Collection, { foreignKey: "userId" });
 Collection.belongsTo(User, { foreignKey: "userId" });
 

@@ -28,5 +28,4 @@ export const deleteComment = async (req, res) => {
 };
 
 export const postComment = async (req, res) => {
-  // Implementation for posting a comment
 };

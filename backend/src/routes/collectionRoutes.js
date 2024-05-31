@@ -16,7 +16,7 @@ router.delete("/:id", authenticateJWT, deleteCollection);
 router.get("/", async (req, res) => {
   try {
     const collections = await Collection.findAll({
-      include: [User, Item], // Include related models if necessary
+      include: [User, Item],
     });
     res.json(collections);
   } catch (error) {
@@ -30,7 +30,7 @@ router.post("/", authenticateJWT, async (req, res) => {
     const newCollection = await Collection.create({
       name,
       description,
-      userId: req.user.id, // Assuming user ID is stored in JWT
+      userId: req.user.id, 
     });
     res.status(201).json(newCollection);
   } catch (error) {

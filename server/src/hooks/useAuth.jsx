@@ -23,34 +23,17 @@ const useProvideAuth = () => {
     navigate("/");
   };
 
-  // const register = async (data) => {
-  //   const user = await apiRegister(data);
-  //   setUser(user);
-  //   navigate("/");
-  // };
-
   const register = async (username, password) => {
-    try {
-      const newUser = await apiRegister(username, password);
-      setUser(newUser);
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
+    const newUser = await apiRegister(username, password);
+    setUser(newUser);
+    navigate("/");
   };
 
   const logout = async () => {
     await apiLogout();
     setUser(null);
-    navigate("/");
+    navigate("/login");
   };
-
-  console.log({ user, login, register, logout });
-
-  // return (
-  //   <AuthContext.Provider value={{ user, login, logout }}>
-  //     {children}
-  //   </AuthContext.Provider>
-  // );
 
   return {
     user,

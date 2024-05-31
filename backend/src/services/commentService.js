@@ -12,4 +12,3 @@ export const deleteComment = async (id) => {
   await Comment.destroy({ where: { id } });
 };
 
-// module.exports = { getComments, createComment, deleteComment };

@@ -9,32 +9,31 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // await register({ email, password });
     try {
       await register(username, password);
-      //   alert("Registration successful!");
+      alert("Registration successful!");
     } catch (error) {
       alert("Registration failed. Please try again.");
     }
   };
 
   return (
-    <div className="register-container flex flex-col  items-center justify-center">
+    <div className="register-container flex flex-col items-center justify-center">
       <h2>Register</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-56">
         <input
-          type="email"
+          type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Email"
-          className="p-2 rounded-lg border  "
+          placeholder="Username"
+          className="p-2 rounded-lg border"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="p-2 rounded-lg border  "
+          className="p-2 rounded-lg border"
         />
         <button
           className="bg-blue-700 text-white border-none rounded-md py-2"
@@ -42,7 +41,7 @@ const Register = () => {
         >
           Register
         </button>
-        <Link to={"/login"}>Do you have an account ? </Link>
+        <Link to="/login">Do you have an account?</Link>
       </form>
     </div>
   );

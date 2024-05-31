@@ -1,4 +1,5 @@
-// src/controllers/itemControllers.js
+import Item from "../models/Item.js";
+
 export const getItems = async (req, res) => {
   try {
     const items = await itemService.getItems(req.params.collectionId);
@@ -9,14 +10,24 @@ export const getItems = async (req, res) => {
 };
 
 export const createItem = async (req, res) => {
+  const { collectionId, name, tags, customStringValues, customIntValues } =
+    req.body;
+
   try {
-    const item = await itemService.createItem(
-      req.params.collectionId,
-      req.body
-    );
-    res.status(201).send(item);
+    const item = await Item.create({
+      collectionId,
+      name,
+      tags,
+      custom_string1_value: customStringValues[0],
+      custom_string2_value: customStringValues[1],
+      custom_string3_value: customStringValues[2],
+      custom_int1_value: customIntValues[0],
+      custom_int2_value: customIntValues[1],
+      custom_int3_value: customIntValues[2],
+    });
+    res.status(201).json(item);
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(500).json({ error: "Failed to create item" });
   }
 };
 
@@ -65,5 +76,16 @@ export const likeItem = async (req, res) => {
     res.send(item);
   } catch (error) {
     res.status(400).send({ error: error.message });
+  }
+};
+
+export const getItemsByCollection = async (req, res) => {
+  const { collectionId } = req.params;
+
+  try {
+    const items = await Item.findAll({ where: { collectionId } });
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch items" });
   }
 };
